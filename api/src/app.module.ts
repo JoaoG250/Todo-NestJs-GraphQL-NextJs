@@ -6,6 +6,7 @@ import { RedisModule } from "./redis/redis.module";
 import { JwtModule } from "./jwt/jwt.module";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { TodoModule } from "./todo/todo.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from "./user/user.module";
     JwtModule,
     AuthModule,
     UserModule,
+    TodoModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: "schema.gql",
