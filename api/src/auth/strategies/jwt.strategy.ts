@@ -1,7 +1,7 @@
 import config from "config";
+import { Injectable } from "@nestjs/common";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
-import { Injectable } from "@nestjs/common";
 import { AuthJwtPayload, AuthUser } from "../types";
 
 const accessTokenSecret: string = config.get("jwt.accessTokenSecret");

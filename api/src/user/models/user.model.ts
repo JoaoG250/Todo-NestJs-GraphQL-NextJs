@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
+import { RelayConnection } from "src/relay/connection";
 
 @ObjectType()
 export class User {
@@ -8,3 +9,6 @@ export class User {
   @Field(() => String)
   name: string;
 }
+
+@ObjectType()
+export class UserConnection extends RelayConnection<User>(User) {}
