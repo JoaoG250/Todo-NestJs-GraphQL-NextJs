@@ -29,3 +29,19 @@ services:
       - "5555:5555" # Prisma studio
     depends_on:
       - db
+
+  next:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: next
+    image: todoapp-next:latest
+    env_file:
+      - ./dotenv/next.env
+    command: development
+    volumes:
+      - ./next:/home/node/todoapp/next
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
