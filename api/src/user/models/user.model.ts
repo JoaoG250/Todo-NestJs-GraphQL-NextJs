@@ -1,9 +1,9 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { RelayConnection } from "src/relay/connection";
 
 @ObjectType()
 export class User {
-  @Field(() => String)
+  @Field(() => ID)
   id: string;
 
   @Field(() => String)

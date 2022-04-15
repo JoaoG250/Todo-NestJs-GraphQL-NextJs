@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma, Todo } from "@prisma/client";
+import { Prisma, Todo, User } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
+
+type TodoWithUser = (Todo & { user: User }) | null;
 
 @Injectable()
 export class TodoService {
@@ -8,6 +10,15 @@ export class TodoService {
 
   async todo(where: Prisma.TodoWhereUniqueInput): Promise<Todo | null> {
     return this.prisma.todo.findUnique({ where });
+  }
+
+  async todoWithUser(
+    where: Prisma.TodoWhereUniqueInput
+  ): Promise<TodoWithUser> {
+    return this.prisma.todo.findUnique({
+      where,
+      include: { user: true },
+    });
   }
 
   async todos(args: {

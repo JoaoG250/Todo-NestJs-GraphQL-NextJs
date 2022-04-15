@@ -7,10 +7,18 @@ type AuthTokens {
   refreshToken: String!
 }
 
+input CreateTodoInput {
+  description: String!
+  title: String!
+}
+
 type Mutation {
+  createTodo(data: CreateTodoInput!): Todo!
+  deleteTodo(id: ID!): Todo!
   login(email: String!, password: String!): AuthTokens!
   refreshToken(refreshToken: String!): AuthTokens!
   register(email: String!, name: String!, password: String!): Boolean!
+  updateTodo(data: UpdateTodoInput!, id: ID!): Todo!
 }
 
 type PageInfo {
@@ -51,7 +59,7 @@ type Query {
     """Returns the last n elements from the list."""
     last: Int
   ): TodoConnection!
-  user(id: String!): User!
+  user(id: ID!): User!
   users(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -70,7 +78,7 @@ type Query {
 type Todo {
   description: String!
   done: Boolean!
-  id: String!
+  id: ID!
   title: String!
 }
 
@@ -84,8 +92,14 @@ type TodoEdge {
   node: Todo!
 }
 
+input UpdateTodoInput {
+  description: String!
+  done: Boolean!
+  title: String!
+}
+
 type User {
-  id: String!
+  id: ID!
   name: String!
 }
 

@@ -1,5 +1,5 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Query, Resolver } from "@nestjs/graphql";
 import { User, UserConnection } from "./models/user.model";
 import { UserService } from "./user.service";
 import { AuthUser } from "src/auth/types";
@@ -20,7 +20,7 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  async user(@Args("id", { type: () => String }) id: string) {
+  async user(@Args("id", { type: () => ID }) id: string) {
     return this.userService.user({ id });
   }
 
