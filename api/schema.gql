@@ -12,6 +12,10 @@ input CreateTodoInput {
   title: String!
 }
 
+input FilterTodoInput {
+  done: Boolean
+}
+
 type Mutation {
   createTodo(data: CreateTodoInput!): Todo!
   deleteTodo(id: ID!): Todo!
@@ -52,6 +56,7 @@ type Query {
 
     """Returns the elements in the list that come before the specified cursor"""
     before: String
+    filter: FilterTodoInput
 
     """Returns the first n elements from the list."""
     first: Int

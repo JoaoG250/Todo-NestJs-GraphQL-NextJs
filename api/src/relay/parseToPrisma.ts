@@ -29,11 +29,6 @@ function relayToPrismaPagination(args: ConnectionArguments): {
 } {
   const { first, last, before, after } = args;
 
-  // If no pagination set, don't touch the args
-  if (!first && !last && !before && !after) {
-    return {};
-  }
-
   /**
    * This is currently only possible with js transformation on the result. eg:
    * after: 1, last: 1
@@ -67,7 +62,7 @@ function relayToPrismaPagination(args: ConnectionArguments): {
   // Edge-case: simulates a single "before" with a hack
   if (before && !first && !last && !after) {
     return {
-      cursor: { id: before },
+      cursor: { id: cursorToIdentifier(before) },
       skip: 1,
       take: Number.MIN_SAFE_INTEGER,
     };

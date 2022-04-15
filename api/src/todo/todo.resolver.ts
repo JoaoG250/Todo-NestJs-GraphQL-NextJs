@@ -4,13 +4,16 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Prisma } from "@prisma/client";
 import { CurrentUser } from "src/auth/decorators/currentUser";
 import { GqlJwtAuthGuard } from "src/auth/guards/jwtAuth.guard";
 import { AuthUser } from "src/auth/types";
+import { cleanNullFromBoolean } from "src/prisma/tools/clean";
 import { ConnectionArgs } from "src/relay/connection";
 import { connectionFromPromisedArray } from "src/relay/connectionArray";
 import { parsePaginationArgs } from "src/relay/parseToPrisma";
 import { CreateTodoInput } from "./dto/createTodo.input";
+import { FilterTodoInput } from "./dto/filterTodo.input";
 import { UpdateTodoInput } from "./dto/updateTodo.input";
 import { Todo, TodoConnection } from "./models/todo.model";
 import { TodoService } from "./todo.service";
@@ -25,11 +28,23 @@ export class TodoResolver {
   }
 
   @Query(() => TodoConnection)
-  async todos(@Args({ type: () => ConnectionArgs }) args: ConnectionArgs) {
+  @UseGuards(GqlJwtAuthGuard)
+  async todos(
+    @CurrentUser() user: AuthUser,
+    @Args({ type: () => ConnectionArgs }) args: ConnectionArgs,
+    @Args("filter", { type: () => FilterTodoInput, nullable: true })
+    filter?: FilterTodoInput
+  ) {
     const pagination = parsePaginationArgs(args);
 
+    const where: Prisma.TodoWhereInput = { userId: user.id };
+
+    if (filter) {
+      where.done = cleanNullFromBoolean(filter.done);
+    }
+
     return connectionFromPromisedArray(
-      this.todoService.todos({ ...pagination }),
+      this.todoService.todos({ where, ...pagination }),
       args
     );
   }
