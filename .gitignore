@@ -105,3 +105,4 @@ dist
 
 # Env files
 *.env
+!example.env
