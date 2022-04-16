@@ -55,7 +55,9 @@ export default function DefaultLayout({ children }: { children: ReactNode }) {
           </Button>
         </Toolbar>
       </AppBar>
-      <Container component="main">{children}</Container>
+      <Container sx={{ pt: 4 }} component="main">
+        {children}
+      </Container>
     </>
   );
 }

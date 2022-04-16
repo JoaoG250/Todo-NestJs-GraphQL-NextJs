@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ReactElement } from "react";
 import { getAccessToken } from "../common/auth";
 import DefaultLayout from "../components/layouts/default";
+import CreateTodoDialog from "../components/todo/createTodoDialog";
 import TodoList from "../components/todo/todoList";
 import { NextPageWithLayout } from "../types";
 
@@ -30,6 +31,7 @@ const Home: NextPageWithLayout = () => {
         <title>Home - Todo App</title>
       </Head>
 
+      <CreateTodoDialog />
       <TodoList />
     </>
   );

@@ -2,46 +2,55 @@ import { Todo, TodoEdge } from "../../models/todo";
 import TodoListItem from "./todoListItem";
 import Empty from "../list/empty";
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import client from "../../api/apollo-client";
 import { gql } from "@apollo/client";
+
+async function fetchTodos(): Promise<Todo[]> {
+  const todosQuery = gql`
+    query todos($first: Int, $after: String, $filter: FilterTodoInput) {
+      todos(first: $first, after: $after, filter: $filter) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        edges {
+          cursor
+          node {
+            id
+            title
+            description
+            done
+          }
+        }
+      }
+    }
+  `;
+  const { data } = await client.query({
+    query: todosQuery,
+    variables: { first: 10 },
+    fetchPolicy: "network-only",
+  });
+
+  return data.todos.edges.map((edge: TodoEdge) => edge.node);
+}
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    async function fetchTodos() {
-      const todosQuery = gql`
-        query todos($first: Int, $after: String, $filter: FilterTodoInput) {
-          todos(first: $first, after: $after, filter: $filter) {
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
-            edges {
-              cursor
-              node {
-                id
-                title
-                description
-                done
-              }
-            }
-          }
-        }
-      `;
-      const { data } = await client.query({
-        query: todosQuery,
-        variables: { first: 10 },
-      });
-
-      setTodos(data.todos.edges.map((edge: TodoEdge) => edge.node));
+    async function fetchData() {
+      setTodos(await fetchTodos());
     }
 
-    fetchTodos();
+    fetchData();
   }, []);
+
+  async function refresh() {
+    setTodos(await fetchTodos());
+  }
 
   return (
     <>

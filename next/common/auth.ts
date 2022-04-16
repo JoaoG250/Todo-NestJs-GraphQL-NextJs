@@ -16,15 +16,8 @@ export function getRefreshToken(ctx?: GetServerSidePropsContext) {
 }
 
 export function setAccessToken(token: string, ctx?: GetServerSidePropsContext) {
-  const claims: JwtPayload = decodeJWT(token);
-
-  let maxAge = 60 * 2;
-  if (claims.exp) {
-    const expDate = new Date(claims.exp * 1000);
-    maxAge = Math.abs(expDate.getTime() - Date.now()) / 1000;
-  }
   setCookie(ctx, accessTokenKey, token, {
-    maxAge,
+    maxAge: 60 * 60 * 24 * 1,
     path: "/",
   });
 }

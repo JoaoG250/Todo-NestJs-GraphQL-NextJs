@@ -6,6 +6,7 @@ import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
+  setRefreshToken,
 } from "../common/auth";
 
 const refreshLink = new TokenRefreshLink({
@@ -60,9 +61,9 @@ const refreshLink = new TokenRefreshLink({
     setAccessToken(accessToken);
   },
   handleResponse: (operation, accessTokenField) => (response: any) => {
-    // here you can parse response, handle errors, prepare returned token to
-    // further operations
-    return { accessToken: response.data.refreshToken.accessToken };
+    const { accessToken, refreshToken } = response.data.refreshToken;
+    setRefreshToken(refreshToken);
+    return { accessToken };
   },
   handleError: (err) => {
     console.warn("Your refresh token is invalid. Try to reauthenticate.");
