@@ -104,6 +104,7 @@ input UpdateTodoInput {
 }
 
 type User {
+  email: String!
   id: ID!
   name: String!
 }

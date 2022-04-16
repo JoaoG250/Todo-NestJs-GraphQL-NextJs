@@ -41,20 +41,20 @@ export function connectionFromArray<T extends DBModel>(
   let hasPreviousPage = false;
 
   if (first) {
-    endOfTrim--;
     if (after) {
       hasPreviousPage = true;
     }
     if (arrayLength > first) {
       hasNextPage = true;
+      endOfTrim--;
     }
   } else if (last) {
-    startOfTrim++;
     if (before) {
       hasNextPage = true;
     }
     if (arrayLength > last) {
       hasPreviousPage = true;
+      startOfTrim++;
     }
   }
 

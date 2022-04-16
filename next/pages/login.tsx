@@ -1,4 +1,6 @@
 import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material";
+import Head from "next/head";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement, useState } from "react";
 import AuthLayout from "../components/layouts/auth";
@@ -20,45 +22,47 @@ const Login: NextPageWithLayout = () => {
 
   return (
     <>
+      <Head>
+        <title>Login - Todo App</title>
+      </Head>
+
       <Typography component="h1" variant="h5">
         Login
       </Typography>
       <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
+          name="email"
+          label="Email address"
           margin="normal"
+          autoComplete="email"
           required
           fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
           autoFocus
           onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
-          margin="normal"
-          required
-          fullWidth
+          type="password"
           name="password"
           label="Password"
-          type="password"
-          id="password"
+          margin="normal"
           autoComplete="current-password"
+          fullWidth
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button
           type="submit"
-          fullWidth
           variant="contained"
+          fullWidth
           sx={{ mt: 3, mb: 2 }}
         >
           Login
         </Button>
-        <Grid container>
+        <Grid container justifyContent="center">
           <Grid item>
-            <Link href="#" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
+            <NextLink href="/register" passHref>
+              <Link variant="body2">{"Don't have an account? Register"}</Link>
+            </NextLink>
           </Grid>
         </Grid>
       </Box>

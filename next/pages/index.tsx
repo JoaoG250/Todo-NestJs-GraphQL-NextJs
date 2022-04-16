@@ -26,7 +26,7 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Todo App</title>
+        <title>Home - Todo App</title>
       </Head>
 
       <h1>Todo App</h1>

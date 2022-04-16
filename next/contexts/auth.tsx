@@ -62,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         me {
           id
           name
+          email
         }
       }
     `;

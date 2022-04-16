@@ -8,6 +8,9 @@ export class User {
 
   @Field(() => String)
   name: string;
+
+  @Field(() => String)
+  email: string;
 }
 
 @ObjectType()
