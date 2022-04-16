@@ -1,12 +1,23 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { AuthProvider } from "../contexts/auth";
+import { AppPropsWithLayout } from "../types";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+    </ThemeProvider>
   );
 }
 

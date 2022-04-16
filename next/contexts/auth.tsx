@@ -102,7 +102,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     destroyCookie({}, "nextauth.token");
     destroyCookie({}, "nextauth.refreshToken");
     setUser(undefined);
-    await router.push("/");
+    await client.resetStore();
+    await router.push("/login");
   }
 
   return (
