@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ReactElement } from "react";
 import { getAccessToken } from "../common/auth";
 import DefaultLayout from "../components/layouts/default";
+import TodoList from "../components/todo/todoList";
 import { NextPageWithLayout } from "../types";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -29,7 +30,7 @@ const Home: NextPageWithLayout = () => {
         <title>Home - Todo App</title>
       </Head>
 
-      <h1>Todo App</h1>
+      <TodoList />
     </>
   );
 };
