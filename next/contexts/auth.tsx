@@ -5,10 +5,16 @@ import {
   useEffect,
   useState,
 } from "react";
-import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { gql } from "@apollo/client";
-import client from "../api/apollo-client";
 import { useRouter } from "next/router";
+import client from "../api/apollo-client";
+import {
+  deleteAccessToken,
+  deleteRefreshToken,
+  getAccessToken,
+  setAccessToken,
+  setRefreshToken,
+} from "../common/auth";
 
 interface LoginData {
   email: string;
@@ -39,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function loadStorage() {
-      const { "nextauth.token": token } = parseCookies();
+      const token = getAccessToken();
 
       if (token) {
         await getUser();
@@ -85,22 +91,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     if (data && data.login) {
-      setCookie({}, "nextauth.token", data.login.accessToken, {
-        maxAge: 60 * 2,
-        path: "/",
-      });
-      setCookie({}, "nextauth.refreshToken", data.login.refreshToken, {
-        maxAge: 60 * 60 * 24 * 1,
-        path: "/",
-      });
-
+      setAccessToken(data.login.accessToken);
+      setRefreshToken(data.login.refreshToken);
       await getUser();
     }
   }
 
   async function logout() {
-    destroyCookie({}, "nextauth.token");
-    destroyCookie({}, "nextauth.refreshToken");
+    deleteAccessToken();
+    deleteRefreshToken();
     setUser(undefined);
     await client.resetStore();
     await router.push("/login");

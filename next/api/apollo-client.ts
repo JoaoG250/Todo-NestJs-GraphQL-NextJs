@@ -1,6 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { parseCookies } from "nookies";
+import { getAccessToken } from "../common/auth";
+import refreshLink from "./refreshLink";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
@@ -8,7 +9,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   // Get the authentication token from local storage if it exists
-  const { "nextauth.token": token } = parseCookies();
+  const token = getAccessToken();
 
   // Return the headers to the context so httpLink can read them
   return {
@@ -20,7 +21,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(refreshLink).concat(httpLink),
   cache: new InMemoryCache(),
 });
 
