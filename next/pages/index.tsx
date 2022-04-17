@@ -1,9 +1,10 @@
-import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { GetServerSideProps } from "next";
 import { ReactElement } from "react";
 import { getAccessToken } from "../common/auth";
 import DefaultLayout from "../components/layouts/default";
-import CreateTodoDialog from "../components/todo/createTodoDialog";
+import CreateTodoButton from "../components/todo/createTodoButton";
+import ModifyTodoDialog from "../components/todo/modifyTodoDialog";
 import TodoList from "../components/todo/todoList";
 import { HomeProvider } from "../contexts/home";
 import { NextPageWithLayout } from "../types";
@@ -33,7 +34,8 @@ const Home: NextPageWithLayout = () => {
       </Head>
 
       <HomeProvider>
-        <CreateTodoDialog />
+        <ModifyTodoDialog />
+        <CreateTodoButton />
         <TodoList />
       </HomeProvider>
     </>

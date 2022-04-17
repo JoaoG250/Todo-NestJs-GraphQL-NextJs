@@ -16,11 +16,15 @@ interface TodoListItemProps {
 }
 
 export default function TodoListItem({ todo }: TodoListItemProps) {
-  const { refreshTodos } = useHomeContext();
+  const { openDialog, refreshTodos } = useHomeContext();
 
   async function handleDelete() {
     await deleteTodo(todo.id);
     refreshTodos();
+  }
+
+  async function handleEdit() {
+    openDialog(todo);
   }
 
   return (
@@ -32,7 +36,7 @@ export default function TodoListItem({ todo }: TodoListItemProps) {
         <Typography>{todo.description}</Typography>
       </AccordionDetails>
       <AccordionActions>
-        <Button variant="outlined" color="info">
+        <Button variant="outlined" color="info" onClick={handleEdit}>
           Edit
         </Button>
         <Button variant="outlined" color="error" onClick={handleDelete}>

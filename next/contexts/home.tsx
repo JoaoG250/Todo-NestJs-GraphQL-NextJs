@@ -11,6 +11,10 @@ import { getTodos } from "../services/todo";
 interface HomeContextType {
   loading: boolean;
   todos: Todo[];
+  dialogOpen: boolean;
+  editingTodo: Todo | undefined;
+  openDialog: (todo?: Todo) => void;
+  closeDialog: () => void;
   refreshTodos: () => void;
 }
 
@@ -19,6 +23,18 @@ const HomeContext = createContext({} as HomeContextType);
 export function HomeProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingTodo, setEditingTodo] = useState<Todo | undefined>(undefined);
+
+  function openDialog(todo?: Todo) {
+    setEditingTodo(todo);
+    setDialogOpen(true);
+  }
+
+  function closeDialog() {
+    setDialogOpen(false);
+    setEditingTodo(undefined);
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -39,7 +55,17 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <HomeContext.Provider value={{ loading, todos, refreshTodos: refresh }}>
+    <HomeContext.Provider
+      value={{
+        loading,
+        todos,
+        dialogOpen,
+        editingTodo,
+        openDialog,
+        closeDialog,
+        refreshTodos: refresh,
+      }}
+    >
       {children}
     </HomeContext.Provider>
   );
