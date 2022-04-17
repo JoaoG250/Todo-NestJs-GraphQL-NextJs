@@ -1,12 +1,11 @@
 import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material";
+import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement, useState } from "react";
-import AuthLayout from "../components/layouts/auth";
 import { NextPageWithLayout } from "../types";
-import { gql } from "@apollo/client";
-import client from "../api/apollo-client";
-import Head from "next/head";
+import { register } from "../services/auth";
+import AuthLayout from "../components/layouts/auth";
 
 const Register: NextPageWithLayout = () => {
   const [name, setName] = useState<string>("");
@@ -16,16 +15,7 @@ const Register: NextPageWithLayout = () => {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const registerMutation = gql`
-      mutation register($name: String!, $email: String!, $password: String!) {
-        register(name: $name, email: $email, password: $password)
-      }
-    `;
-
-    await client.mutate({
-      mutation: registerMutation,
-      variables: { name, email, password },
-    });
+    await register({ name, email, password });
 
     await router.push("/login");
   }

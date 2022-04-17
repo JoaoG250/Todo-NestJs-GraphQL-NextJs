@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import {
   Box,
   Button,
@@ -10,7 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import client from "../../api/apollo-client";
+import { createTodo } from "../../services/todo";
 
 export default function CreateTodoDialog() {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,25 +27,7 @@ export default function CreateTodoDialog() {
   }
 
   async function submit() {
-    const createTodoMutation = gql`
-      mutation createTodo($data: CreateTodoInput!) {
-        createTodo(data: $data) {
-          id
-          title
-          description
-          done
-        }
-      }
-    `;
-    await client.mutate({
-      mutation: createTodoMutation,
-      variables: {
-        data: {
-          title,
-          description,
-        },
-      },
-    });
+    await createTodo({ title, description });
 
     closeDialog();
   }

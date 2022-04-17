@@ -1,39 +1,12 @@
-import { Todo, TodoEdge } from "../../models/todo";
-import TodoListItem from "./todoListItem";
 import Empty from "../list/empty";
+import TodoListItem from "./todoListItem";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
-import client from "../../api/apollo-client";
-import { gql } from "@apollo/client";
+import { Todo, TodoEdge } from "../../models/todo";
+import { getTodos } from "../../services/todo";
 
 async function fetchTodos(): Promise<Todo[]> {
-  const todosQuery = gql`
-    query todos($first: Int, $after: String, $filter: FilterTodoInput) {
-      todos(first: $first, after: $after, filter: $filter) {
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
-        }
-        edges {
-          cursor
-          node {
-            id
-            title
-            description
-            done
-          }
-        }
-      }
-    }
-  `;
-  const { data } = await client.query({
-    query: todosQuery,
-    variables: { first: 10 },
-    fetchPolicy: "network-only",
-  });
-
+  const { data } = await getTodos({ first: 10 });
   return data.todos.edges.map((edge: TodoEdge) => edge.node);
 }
 

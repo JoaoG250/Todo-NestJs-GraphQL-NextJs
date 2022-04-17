@@ -7,7 +7,7 @@ import {
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
-} from "../common/auth";
+} from "../../common/auth";
 
 const refreshLink = new TokenRefreshLink({
   accessTokenField: "accessToken",

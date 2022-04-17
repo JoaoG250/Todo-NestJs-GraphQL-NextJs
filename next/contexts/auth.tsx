@@ -5,9 +5,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { gql } from "@apollo/client";
 import { useRouter } from "next/router";
-import client from "../api/apollo-client";
+import client from "../apollo/client";
 import {
   deleteAccessToken,
   deleteRefreshToken,
@@ -15,6 +14,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "../common/auth";
+import { getUserInfo, login as authLogin } from "../services/auth";
 
 interface LoginData {
   email: string;
@@ -57,19 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function getUser() {
-    const meQuery = gql`
-      query me {
-        me {
-          id
-          name
-          email
-        }
-      }
-    `;
-
-    const { data } = await client.query({
-      query: meQuery,
-    });
+    const { data } = await getUserInfo();
 
     if (data && data.me) {
       setUser(data.me);
@@ -77,19 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function login({ email, password }: LoginData) {
-    const loginMutation = gql`
-      mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-          accessToken
-          refreshToken
-        }
-      }
-    `;
-
-    const { data } = await client.mutate({
-      mutation: loginMutation,
-      variables: { email, password },
-    });
+    const { data } = await authLogin({ email, password });
 
     if (data && data.login) {
       setAccessToken(data.login.accessToken);
