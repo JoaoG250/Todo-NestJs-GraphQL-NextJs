@@ -1,13 +1,11 @@
 import Empty from "../list/empty";
 import TodoListItem from "./todoListItem";
 import { Box } from "@mui/material";
-import { Todo } from "../../models/todo";
+import { useHomeContext } from "../../contexts/home";
 
-interface TodoListProps {
-  todos: Todo[];
-}
+export default function TodoList() {
+  const { todos } = useHomeContext();
 
-export default function TodoList({ todos }: TodoListProps) {
   return (
     <>
       <Box sx={{ my: 4 }}>

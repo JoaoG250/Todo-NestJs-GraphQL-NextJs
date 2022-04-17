@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function login({ email, password }: LoginData) {
-    const { data } = await authLogin({ email, password });
+    const { data } = await authLogin(email, password);
 
     if (data && data.login) {
       setAccessToken(data.login.accessToken);

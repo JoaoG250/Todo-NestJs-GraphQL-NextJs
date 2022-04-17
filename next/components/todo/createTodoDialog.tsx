@@ -10,15 +10,13 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { createTodo } from "../../services/todo";
+import { useHomeContext } from "../../contexts/home";
 
-interface CreateTodoDialogProps {
-  onCreated: () => void;
-}
-
-export default function CreateTodoDialog({ onCreated }: CreateTodoDialogProps) {
+export default function CreateTodoDialog() {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const { refreshTodos } = useHomeContext();
 
   function closeDialog() {
     setTitle("");
@@ -33,7 +31,7 @@ export default function CreateTodoDialog({ onCreated }: CreateTodoDialogProps) {
   async function submit() {
     await createTodo({ title, description });
 
-    onCreated();
+    refreshTodos();
     closeDialog();
   }
 

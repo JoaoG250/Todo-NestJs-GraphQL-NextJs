@@ -1,17 +1,28 @@
 import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
+  AccordionActions,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Typography,
 } from "@mui/material";
 import { Todo } from "../../models/todo";
+import { deleteTodo } from "../../services/todo";
+import { useHomeContext } from "../../contexts/home";
 
 interface TodoListItemProps {
   todo: Todo;
 }
 
 export default function TodoListItem({ todo }: TodoListItemProps) {
+  const { refreshTodos } = useHomeContext();
+
+  async function handleDelete() {
+    await deleteTodo(todo.id);
+    refreshTodos();
+  }
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
@@ -20,6 +31,14 @@ export default function TodoListItem({ todo }: TodoListItemProps) {
       <AccordionDetails>
         <Typography>{todo.description}</Typography>
       </AccordionDetails>
+      <AccordionActions>
+        <Button variant="outlined" color="info">
+          Edit
+        </Button>
+        <Button variant="outlined" color="error" onClick={handleDelete}>
+          Delete
+        </Button>
+      </AccordionActions>
     </Accordion>
   );
 }

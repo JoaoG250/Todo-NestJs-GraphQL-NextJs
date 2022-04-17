@@ -15,7 +15,7 @@ const Register: NextPageWithLayout = () => {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await register({ name, email, password });
+    await register(name, email, password);
 
     await router.push("/login");
   }

@@ -8,20 +8,16 @@ export function getUserInfo() {
   });
 }
 
-export function login(variables: { email: string; password: string }) {
+export function login(email: string, password: string) {
   return client.mutate({
     mutation: LOGIN_MUTATION,
-    variables,
+    variables: { email, password },
   });
 }
 
-export function register(variables: {
-  name: string;
-  email: string;
-  password: string;
-}) {
+export function register(name: string, email: string, password: string) {
   return client.mutate({
     mutation: REGISTER_MUTATION,
-    variables,
+    variables: { name, email, password },
   });
 }
