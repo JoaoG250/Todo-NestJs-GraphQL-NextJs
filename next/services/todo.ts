@@ -15,9 +15,9 @@ export function getTodos(variables: {
   });
 }
 
-export function createTodo(variables: { title: string; description: string }) {
+export function createTodo(data: { title: string; description: string }) {
   return client.mutate({
     mutation: CREATE_TODO_MUTATION,
-    variables,
+    variables: { data },
   });
 }

@@ -11,7 +11,11 @@ import {
 import { useState } from "react";
 import { createTodo } from "../../services/todo";
 
-export default function CreateTodoDialog() {
+interface CreateTodoDialogProps {
+  onCreated: () => void;
+}
+
+export default function CreateTodoDialog({ onCreated }: CreateTodoDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -29,6 +33,7 @@ export default function CreateTodoDialog() {
   async function submit() {
     await createTodo({ title, description });
 
+    onCreated();
     closeDialog();
   }
 
