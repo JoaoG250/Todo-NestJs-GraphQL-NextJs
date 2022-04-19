@@ -26,7 +26,7 @@ export class TodoService {
     take?: number;
     cursor?: Prisma.TodoWhereUniqueInput;
     where?: Prisma.TodoWhereInput;
-    orderBy?: Prisma.TodoOrderByWithRelationInput;
+    orderBy?: Prisma.Enumerable<Prisma.TodoOrderByWithRelationInput>;
   }): Promise<Todo[]> {
     const { skip, take, cursor, where, orderBy } = args;
     return this.prisma.todo.findMany({

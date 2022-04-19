@@ -5,6 +5,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  Checkbox,
   Typography,
 } from "@mui/material";
 import { Todo } from "../../models/todo";
@@ -30,7 +31,13 @@ export default function TodoListItem({ todo }: TodoListItemProps) {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
-        <Typography>{todo.title}</Typography>
+        <Typography
+          variant="h6"
+          sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
+        >
+          {todo.title}
+        </Typography>
+        <Checkbox checked={todo.done} disabled />
       </AccordionSummary>
       <AccordionDetails>
         <Typography>{todo.description}</Typography>

@@ -30,7 +30,7 @@ export default function ModifyTodoDialog() {
     setTitle(todo?.title || "");
     setDescription(todo?.description || "");
     setDone(todo?.done || false);
-  }, [todo]);
+  }, [todo, open]);
 
   async function submit() {
     if (todo) {

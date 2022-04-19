@@ -44,7 +44,11 @@ export class TodoResolver {
     }
 
     return connectionFromPromisedArray(
-      this.todoService.todos({ where, ...pagination }),
+      this.todoService.todos({
+        where,
+        orderBy: [{ done: "asc" }, { createdAt: "asc" }],
+        ...pagination,
+      }),
       args
     );
   }

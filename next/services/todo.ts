@@ -6,13 +6,17 @@ import {
 } from "../apollo/mutations/todo";
 import { TODOS_QUERY } from "../apollo/queries/todo";
 
-export function getTodos(
-  first?: number,
-  after?: string,
+export function getTodos({
+  first,
+  after,
+  filter,
+}: {
+  first?: number;
+  after?: string;
   filter?: {
     done?: boolean;
-  }
-) {
+  };
+}) {
   return client.query({
     query: TODOS_QUERY,
     variables: { first, after, filter },

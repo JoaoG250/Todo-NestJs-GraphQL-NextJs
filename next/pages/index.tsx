@@ -8,6 +8,7 @@ import ModifyTodoDialog from "../components/todo/modifyTodoDialog";
 import TodoList from "../components/todo/todoList";
 import { HomeProvider } from "../contexts/home";
 import { NextPageWithLayout } from "../types";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const token = getAccessToken(ctx);
@@ -27,13 +28,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Home: NextPageWithLayout = () => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
         <title>Home - Todo App</title>
       </Head>
 
-      <HomeProvider>
+      <HomeProvider query={router.query}>
         <ModifyTodoDialog />
         <CreateTodoButton />
         <TodoList />

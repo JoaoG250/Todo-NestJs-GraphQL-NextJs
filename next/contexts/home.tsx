@@ -1,6 +1,8 @@
+import { ParsedUrlQuery } from "querystring";
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -20,7 +22,13 @@ interface HomeContextType {
 
 const HomeContext = createContext({} as HomeContextType);
 
-export function HomeProvider({ children }: { children: ReactNode }) {
+export function HomeProvider({
+  query,
+  children,
+}: {
+  query: ParsedUrlQuery;
+  children: ReactNode;
+}) {
   const [loading, setLoading] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -36,19 +44,29 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     setEditingTodo(undefined);
   }
 
+  function getFilter(query: ParsedUrlQuery) {
+    const filter: { done?: boolean } = {};
+    if (query.done === "true") {
+      filter.done = true;
+    } else if (query.done === "false") {
+      filter.done = false;
+    }
+    return filter;
+  }
+
+  const fetchTodos = useCallback(async () => {
+    setLoading(true);
+    const { data } = await getTodos({ first: 10, filter: getFilter(query) });
+    setLoading(false);
+    return data.todos.edges.map((edge: TodoEdge) => edge.node);
+  }, [query]);
+
   useEffect(() => {
     async function fetchData() {
       setTodos(await fetchTodos());
     }
     fetchData();
-  }, []);
-
-  async function fetchTodos(): Promise<Todo[]> {
-    setLoading(true);
-    const { data } = await getTodos(10);
-    setLoading(false);
-    return data.todos.edges.map((edge: TodoEdge) => edge.node);
-  }
+  }, [fetchTodos]);
 
   async function refresh() {
     setTodos(await fetchTodos());
